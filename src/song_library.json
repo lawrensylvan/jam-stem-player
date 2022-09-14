@@ -1,0 +1,64 @@
+[
+    {
+        "name": "Todos Vuelven",
+        "basePath": "todos_vuelven",
+        "sheetMusic": "todos_vuelven.musicxml",
+        "tracks": ["Soprano", "Alto", "Tenor", "Bass"],
+        "medias": {
+
+            "Soprano": [
+                {
+                    "name": "Elo",
+                    "url": "elo.mov",
+                    "offset": 10.3,
+                    "duration": 302,
+                    "volume": 1
+                },
+                {
+                    "name":"Mathilde",
+                    "url": "mathilde.mp4", 
+                    "offset": 0
+                }
+            ],
+
+            "Alto": [
+                {
+                    "name": "Julie",
+                    "url": "julie.mp4",
+                    "offset": 6.75,
+                    "duration": 295,
+                    "volume": 1
+                }
+            ],
+
+            "Tenor": [
+                {
+                    "name": "Gaetan",
+                    "url": "gaetan.mp4",
+                    "offset": 7,
+                    "duration": 261,
+                    "volume": 1
+                },
+                {
+                    "name": "Rémi",
+                    "url": "remi.avi",
+                    "offset": 0}
+            ],
+
+            "Bass": [
+                {
+                    "name": "David",
+                    "url": "david.mov",
+                    "offset": 4.7,
+                    "duration": 295,
+                    "volume": 1
+                },
+                {
+                    "name": "Laurent",
+                    "url": "laurent.mp4",
+                    "offset": 0
+                }
+            ]
+        }
+    }
+]
