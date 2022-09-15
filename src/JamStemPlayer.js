@@ -1,6 +1,6 @@
 import ReactPlayer from 'react-player/lazy'
 import { createRef, useCallback, useRef, useState } from 'react'
-import { Button, Typography } from 'antd'
+import { Button, Slider, Typography } from 'antd'
 import { PauseCircleOutlined, PlayCircleOutlined, StepBackwardOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css'
 import PlayheadSlider from './PlayheadSlider';
@@ -19,6 +19,7 @@ export default function JamStemPlayer({ songDef }) {
     
     const [isPlaying, setIsPlaying] = useState(false)
     const [lastPosition, setLastPosition] = useState(null)
+    const [playbackSpeed, setPlaybackSpeed] = useState(1.0)
     
     const shouldPlayWhenAllReady = useRef(false)
     const shouldSeekWhenAllReady = useRef(0)
@@ -41,8 +42,8 @@ export default function JamStemPlayer({ songDef }) {
         }
     }
 
-    const seekTo = useCallback((newPosition) => {
-        if(!isPlaying && newPosition === lastPosition) {
+    const seekTo = useCallback((position) => {
+        if(!isPlaying && position === lastPosition) {
             return
         }
 
@@ -52,15 +53,15 @@ export default function JamStemPlayer({ songDef }) {
         readyMedias.current = []
         setAllMediaReady(false)
 
-        setLastPosition(twoDecimal(newPosition))
+        setLastPosition(twoDecimal(position))
 
-        playerRefs.current.forEach((ref, i) => ref.current.seekTo(newPosition + (medias[i].offset ?? 0)))
+        playerRefs.current.forEach((ref, i) => ref.current.seekTo(position + (medias[i].offset ?? 0)))
         shouldPlayWhenAllReady.current = shouldPlayWhenAllReady.current || wasPlaying
     }, [isPlaying, lastPosition, medias])
 
     // keep other players in sync when a player is seeked with the controls
-    function syncPlayersWith(playerIdx, newPosition) {
-        const globalPosition = twoDecimal(newPosition - medias[playerIdx].offset)
+    function syncPlayersWith(playerIdx, position) {
+        const globalPosition = twoDecimal(position - medias[playerIdx].offset)
         if(lastPosition !== globalPosition) {
             seekTo(Math.max(globalPosition, 0))
         }
@@ -82,6 +83,12 @@ export default function JamStemPlayer({ songDef }) {
             <Button size='large' onClick={() => seekTo(duration / 2)}>
                 Seek middle
             </Button>
+
+            <Slider
+                min={0} max={2} step={0.05}
+                value={playbackSpeed}
+                onChange={v => setPlaybackSpeed(v)}
+            />
             
             <PlayheadSlider
                 duration={duration}
@@ -97,6 +104,8 @@ export default function JamStemPlayer({ songDef }) {
                                         url={songDef.basePath + '/' + media.url}
                                         controls={true}
                                         volume={media.volume ?? 1}
+                                        playbackRate={playbackSpeed}
+                                        onPlaybackRateChange={v => {console.log("hey");setPlaybackSpeed(v)}}
                                         onReady={() => onReady(media)}
                                         playing={isPlaying}
                                         onPause={() => setIsPlaying(false)}
