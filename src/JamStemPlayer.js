@@ -19,7 +19,7 @@ export default function JamStemPlayer({ songDef }) {
     
     const [isPlaying, setIsPlaying] = useState(false)
     const [lastPosition, setLastPosition] = useState(null)
-    const [playbackSpeed, setPlaybackSpeed] = useState(1.0)
+    const [playbackRate, setPlaybackRate] = useState(1.0)
     
     const shouldPlayWhenAllReady = useRef(false)
     const shouldSeekWhenAllReady = useRef(0)
@@ -86,8 +86,8 @@ export default function JamStemPlayer({ songDef }) {
 
             <Slider
                 min={0} max={2} step={0.05}
-                value={playbackSpeed}
-                onChange={v => setPlaybackSpeed(v)}
+                value={playbackRate}
+                onChange={v => setPlaybackRate(v)}
             />
             
             <PlayheadSlider
@@ -95,6 +95,7 @@ export default function JamStemPlayer({ songDef }) {
                 isPlaying={isPlaying}
                 lastPosition={lastPosition ?? 0}
                 step={0.2}
+                playbackRate={playbackRate}
                 onSeek={p => seekTo(p)}
             />
             
@@ -104,8 +105,8 @@ export default function JamStemPlayer({ songDef }) {
                                         url={songDef.basePath + '/' + media.url}
                                         controls={true}
                                         volume={media.volume ?? 1}
-                                        playbackRate={playbackSpeed}
-                                        onPlaybackRateChange={v => {console.log("hey");setPlaybackSpeed(v)}}
+                                        playbackRate={playbackRate}
+                                        onPlaybackRateChange={v => setPlaybackRate(v)}
                                         onReady={() => onReady(media)}
                                         playing={isPlaying}
                                         onPause={() => setIsPlaying(false)}
